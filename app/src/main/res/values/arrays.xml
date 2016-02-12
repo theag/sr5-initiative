@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="pref_setInitiative_entries">
+        <item>@string/dialog_chain</item>
+        <item>@string/single_activity</item>
+    </string-array>
+    <string-array name="initiative_actions">
+        <item>Block (-5)</item>
+        <item>Dodge (-5)</item>
+        <item>Hit the dirt (-5)</item>
+        <item>Intercept (-5)</item>
+        <item>Parry (-5)</item>
+        <item>Full defense (-10)</item>
+        <item>Surpice (-10)</item>
+        <item>Called shot - Shake up (-5)</item>
+        <item>Full matrix defense (-10)</item>
+        <item>Spell defense (-5)</item>
+    </string-array>
+    <integer-array name="initiave_action_results">
+        <item>5</item>
+        <item>5</item>
+        <item>5</item>
+        <item>5</item>
+        <item>5</item>
+        <item>10</item>
+        <item>10</item>
+        <item>5</item>
+        <item>10</item>
+        <item>5</item>
+    </integer-array>
+</resources>

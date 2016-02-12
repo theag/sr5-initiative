@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">SR5 Initiative</string>
+    <string name="action_settings">Settings</string>
+    <string name="next_to_act">Next to act</string>
+    <string name="next_pass">Next pass</string>
+    <string name="new_round">New round</string>
+    <string name="add_participant">Add participant</string>
+    <string name="name">Name</string>
+    <string name="initiative">Initiative</string>
+    <string name="player">Player</string>
+    <string name="npc">NPC</string>
+    <string name="enemy">Enemy</string>
+    <string name="type">Type</string>
+    <string name="remove_others">Remove Others</string>
+    <string name="remove_enemies">Remove Enemies</string>
+    <string name="title_activity_set_initiative">SetInitiativeActivity</string>
+    <string name="done">Done</string>
+    <string name="set_initiative">Set Initiative</string>
+    <string name="dialog_chain">Dialog chain</string>
+    <string name="single_activity">Single activity</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="set_initiative_mode">Set initiative mode</string>
+    <string name="set_initiative_dialog_title">How to set initiatives</string>
+</resources>
