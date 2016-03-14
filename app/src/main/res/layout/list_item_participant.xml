@@ -16,45 +16,57 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/image_shares_initiative"
-        android:src="@drawable/ic_sync_problem_24dp"
+        android:src="@drawable/my_sync_problem"
         android:layout_gravity="center_vertical"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"/>
+        android:padding="5dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginRight="2dp"
-        android:id="@+id/text_initiative"/>
+        android:id="@+id/text_initiative"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:textAppearance="@android:style/TextAppearance.Large"/>
 
     <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:layout_gravity="center_vertical"
+        android:layout_marginLeft="10dp"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
-        android:paddingTop="2dp"
-        android:paddingBottom="2dp"
-        android:id="@+id/text_name"/>
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:id="@+id/text_name"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:textAppearance="@android:style/TextAppearance.Large"
+        android:singleLine="true"
+        android:ellipsize="end"/>
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/button_initiative_action"
-        android:src="@drawable/ic_track_changes_24dp"
+        android:src="@drawable/my_track_changes"
         android:layout_gravity="center_vertical"
-        android:onClick="initiativeAction"/>
+        android:background="@android:color/transparent"
+        android:onClick="initiativeAction"
+        android:padding="5dp"/>
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/button_remove"
-        android:src="@drawable/ic_close_24dp"
+        android:src="@drawable/my_close"
         android:layout_gravity="center_vertical"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
-        android:onClick="removeParticipant"/>
+        android:background="@android:color/transparent"
+        android:onClick="removeParticipant"
+        android:padding="5dp"/>
 
 </LinearLayout>

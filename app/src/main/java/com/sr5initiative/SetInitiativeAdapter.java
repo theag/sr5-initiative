@@ -21,6 +21,9 @@ public class SetInitiativeAdapter extends BaseAdapter implements ListAdapter {
     public SetInitiativeAdapter(Context context) {
         participants = ParticipantArray.getInstance().getAllParticipants();
         storedInitiatives = new String[participants.length];
+        for(int i = 0; i < storedInitiatives.length; i++) {
+            storedInitiatives[i] = "";
+        }
         this.context = context;
     }
 

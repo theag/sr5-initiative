@@ -182,7 +182,7 @@ public class ParticipantArray implements Iterable<Participant> {
         current = -1;
     }
 
-    public void doAction(int index, int adjustment) {
-        participants.get(index).setInitiative(participants.get(index).getPassInitiative() - adjustment);
+    public void sort() {
+        Collections.sort(participants);
     }
 }

@@ -15,6 +15,7 @@
         <item>Called shot - Shake up (-5)</item>
         <item>Full matrix defense (-10)</item>
         <item>Spell defense (-5)</item>
+        <item>Undo Last Action</item>
     </string-array>
     <integer-array name="initiave_action_results">
         <item>5</item>
@@ -27,5 +28,6 @@
         <item>5</item>
         <item>10</item>
         <item>5</item>
+        <item>-1</item>
     </integer-array>
 </resources>

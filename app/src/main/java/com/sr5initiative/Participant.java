@@ -1,5 +1,6 @@
 package com.sr5initiative;
 
+import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 /**
@@ -13,19 +14,23 @@ public class Participant implements Comparable<Participant> {
 
     public static Participant load(String data) {
         StringTokenizer tokens = new StringTokenizer(data, ""+((char)31));
-        return new Participant(tokens.nextToken(), Integer.parseInt(tokens.nextToken()), Integer.parseInt(tokens.nextToken()));
+        return new Participant(tokens.nextToken(), Integer.parseInt(tokens.nextToken()), Integer.parseInt(tokens.nextToken()), Integer.parseInt(tokens.nextToken()));
     }
 
     public final String name;
+    public final int reaction;
     private int initiative;
     private int passInitiative;
     public int type;
+    private int lastAction;
 
-    public Participant(String name, int initiative, int type) {
+    public Participant(String name, int reaction, int initiative, int type) {
         this.name = name;
+        this.reaction = reaction;
         this.initiative = initiative;
         passInitiative = initiative;
         this.type = type;
+        lastAction = 0;
     }
 
     public int nextPass() {
@@ -36,16 +41,20 @@ public class Participant implements Comparable<Participant> {
     public void setInitiative(int initiative) {
         this.initiative = initiative;
         passInitiative = initiative;
+        lastAction = 0;
     }
 
     public void resetInitiative() {
         passInitiative = initiative;
+        lastAction = 0;
     }
 
     @Override
     public int compareTo(Participant another) {
         if(passInitiative != another.passInitiative) {
             return another.passInitiative - passInitiative;
+        } else if(reaction != another.reaction) {
+            return another.reaction - reaction;
         } else {
             return type - another.type;
         }
@@ -56,6 +65,16 @@ public class Participant implements Comparable<Participant> {
     }
 
     public String save() {
-        return name +((char)31) +initiative +((char)31) +type;
+        return name +((char)31) +reaction +((char)31) +initiative +((char)31) +type;
+    }
+
+    public void doAction(int adjustment) {
+        lastAction = adjustment;
+        passInitiative -= adjustment;
+    }
+
+    public void undoAction() {
+        passInitiative += lastAction;
+        lastAction = 0;
     }
 }

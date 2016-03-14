@@ -21,4 +21,6 @@
     <string name="title_activity_settings">Settings</string>
     <string name="set_initiative_mode">Set initiative mode</string>
     <string name="set_initiative_dialog_title">How to set initiatives</string>
+    <string name="reaction">Reaction</string>
+    <string name="new_combat">New combat</string>
 </resources>

@@ -69,11 +69,17 @@ public class ParticipantAdapter extends BaseAdapter implements ListAdapter {
             view.findViewById(R.id.image_shares_initiative).setVisibility(View.VISIBLE);
         }
         TextView tv = (TextView)view.findViewById(R.id.text_name);
-        tv.setText(current.name);
+        if(hasUniqueInitiative) {
+            tv.setText(current.name);
+        } else {
+            tv.setText(current.name +" (" +current.reaction +")");
+        }
         if(position == participants.getCurrent()) {
             tv.setBackgroundColor(getColor(R.color.current));
+            tv.setTextColor(getColor(android.R.color.black));
         } else {
             tv.setBackgroundColor(getColor(android.R.color.transparent));
+            tv.setTextColor(getColor(android.R.color.white));
         }
         tv = (TextView)view.findViewById(R.id.text_initiative);
         tv.setText(""+current.getPassInitiative());
@@ -93,8 +99,8 @@ public class ParticipantAdapter extends BaseAdapter implements ListAdapter {
         notifyDataSetInvalidated();
     }
 
-    public void addParticipant(String name, int initiative, int type) {
-        participants.add(new Participant(name, initiative, type));
+    public void addParticipant(String name, int reaction, int initiative, int type) {
+        participants.add(new Participant(name, reaction, initiative, type));
         notifyDataSetInvalidated();
     }
 

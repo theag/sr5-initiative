@@ -17,6 +17,9 @@ import java.io.File;
 public class MainActivity extends AppCompatActivity implements AddParticipantDialog.OnClickListener {
 
     private static final int INITIATIVE_REQUEST = 1;
+    public static final String MAKING_NEW_COMBAT = "making new combat";
+
+    private boolean makingNewCombat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements AddParticipantDia
         lv.setAdapter(new ParticipantAdapter(this));
         buttonSet();
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+        makingNewCombat = false;
     }
 
     @Override
@@ -94,12 +98,16 @@ public class MainActivity extends AppCompatActivity implements AddParticipantDia
             } else {
                 ListView lv = (ListView)findViewById(R.id.listView);
                 ParticipantAdapter pa = (ParticipantAdapter)lv.getAdapter();
-                pa.addParticipant(data.getString(AddParticipantDialog.NAME), data.getInt(AddParticipantDialog.INITIATIVE), data.getInt(AddParticipantDialog.TYPE));
+                pa.addParticipant(data.getString(AddParticipantDialog.NAME), data.getInt(AddParticipantDialog.REACTION), data.getInt(AddParticipantDialog.INITIATIVE), data.getInt(AddParticipantDialog.TYPE));
                 buttonSet();
                 if(data.getInt(AddParticipantDialog.WHICH) == AddParticipantDialog.NEUTRAL_BUTTON) {
                     addParticipant(null);
+                } else if(makingNewCombat) {
+                    nextThing(findViewById(R.id.button_new_round));
                 }
             }
+        } else if(makingNewCombat) {
+            nextThing(findViewById(R.id.button_new_round));
         }
     }
 
@@ -127,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements AddParticipantDia
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Initiative Action")
                 .setCancelable(true)
-                .setItems(R.array.initiative_actions, new DialogInterface.OnClickListener() {
+                .setItems(restrictInitiativeActions(ParticipantArray.getInstance().get(indexClicked).getPassInitiative()), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         initiativeActionChoosen(which);
@@ -136,12 +144,55 @@ public class MainActivity extends AppCompatActivity implements AddParticipantDia
                 .show();
     }
 
-    private void initiativeActionChoosen(int which) {
+    private String[] restrictInitiativeActions(int passInitiative) {
         int[] results = getResources().getIntArray(R.array.initiave_action_results);
-        ParticipantArray.getInstance().doAction(indexClicked, results[which]);
+        int count = 0;
+        for(int i = 0; i < results.length; i++) {
+            if(results[i] <= passInitiative) {
+                count++;
+            }
+        }
+        String[] rv = new String[count];
+        String[] actions = getResources().getStringArray(R.array.initiative_actions);
+        count = 0;
+        for(int i = 0; i < actions.length; i++) {
+            if(results[i] <= passInitiative) {
+                rv[count++] = actions[i];
+            }
+        }
+        return rv;
+    }
+
+    private void initiativeActionChoosen(int which) {
+        Participant participant = ParticipantArray.getInstance().get(indexClicked);
+        int[] results = restrictInitiativeResults(participant.getPassInitiative());
+        if(results[which] < 0) {
+            participant.undoAction();
+        } else {
+            participant.doAction(results[which]);
+        }
+        ParticipantArray.getInstance().sort();
         ListView lv = (ListView) findViewById(R.id.listView);
         ParticipantAdapter pa = (ParticipantAdapter)lv.getAdapter();
         pa.notifyDataSetInvalidated();
+    }
+
+    private int[] restrictInitiativeResults(int passInitiative) {
+        int[] results = getResources().getIntArray(R.array.initiave_action_results);
+        int count = 0;
+        for(int i = 0; i < results.length; i++) {
+            if(results[i] <= passInitiative) {
+                count++;
+            }
+        }
+        int[] rv = new int[count];
+        count = 0;
+        for(int i = 0; i < results.length; i++) {
+            if(results[i] <= passInitiative) {
+                rv[count++] = results[i];
+            }
+        }
+        return rv;
     }
 
     private void buttonSet() {
@@ -191,6 +242,7 @@ public class MainActivity extends AppCompatActivity implements AddParticipantDia
     }
 
     public void newRoundContinue() {
+        makingNewCombat = false;
         ListView lv = (ListView)findViewById(R.id.listView);
         ParticipantAdapter pa = (ParticipantAdapter)lv.getAdapter();
         pa.nextRound();
@@ -209,5 +261,14 @@ public class MainActivity extends AppCompatActivity implements AddParticipantDia
                 break;
         }
         buttonSet();
+    }
+
+    public void newCombat(View view) {
+        makingNewCombat = true;
+        ListView lv = (ListView)findViewById(R.id.listView);
+        ParticipantAdapter pa = (ParticipantAdapter)lv.getAdapter();
+        pa.removeEnemies();
+        AddParticipantDialog frag = new AddParticipantDialog();
+        frag.show(getSupportFragmentManager(), "dialog");
     }
 }

@@ -23,6 +23,7 @@ public class AddParticipantDialog extends DialogFragment {
 
     public static final String WHICH = "which";
     public static final String NAME = "name";
+    public static final String REACTION = "reaction";
     public static final String INITIATIVE = "initiative";
     public static final String TYPE = "type";
     public static final String ERROR = "error";
@@ -47,13 +48,23 @@ public class AddParticipantDialog extends DialogFragment {
         View inflated = inflater.inflate(R.layout.dialog_add_participant, null);
         Bundle args = getArguments();
         if(args != null) {
+            EditText et = (EditText)inflated.findViewById(R.id.editText_initiative);
             if(args.containsKey(INITIATIVE)) {
-                EditText et = (EditText)inflated.findViewById(R.id.editText_initiative);
-                et.setText(""+args.getInt(INITIATIVE));
+                et.setText("" + args.getInt(INITIATIVE));
+            } else {
+                et.requestFocus();
             }
+            et = (EditText)inflated.findViewById(R.id.editText_reaction);
+            if(args.containsKey(REACTION)) {
+                et.setText(args.getString(REACTION));
+            } else {
+                et.requestFocus();
+            }
+            et = (EditText)inflated.findViewById(R.id.editText_name);
             if(args.containsKey(NAME)) {
-                EditText et = (EditText)inflated.findViewById(R.id.editText_name);
                 et.setText(args.getString(NAME));
+            } else {
+                et.requestFocus();
             }
             RadioButton rb;
             switch(args.getInt(TYPE)) {
@@ -71,80 +82,92 @@ public class AddParticipantDialog extends DialogFragment {
             rb.setChecked(true);
         }
         builder.setView(inflated)
-                .setPositiveButton("Save", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Bundle bundle = new Bundle();
-                        bundle.putInt(WHICH, POSITIVE_BUTTON);
-                        Dialog apd = getDialog();
-                        EditText et = (EditText)apd.findViewById(R.id.editText_initiative);
-                        if(et.getText().length() == 0) {
-                            bundle.putString(ERROR, "Must set initiative.");
-                        } else {
-                            bundle.putInt(INITIATIVE, Integer.parseInt(et.getText().toString()));
-                        }
-                        et = (EditText)apd.findViewById(R.id.editText_name);
-                        if(et.getText().length() == 0) {
-                            bundle.putString(ERROR, "Must set name.");
-                        } else {
-                            bundle.putString(NAME, et.getText().toString());
-                        }
-                        RadioGroup rg = (RadioGroup)apd.findViewById(R.id.radioGroup_type);
-                        switch(rg.getCheckedRadioButtonId()) {
-                            case R.id.radio_player:
-                                bundle.putInt(TYPE, Participant.PLAYER);
-                                break;
-                            case R.id.radio_npc:
-                                bundle.putInt(TYPE, Participant.NPC);
-                                break;
-                            case R.id.radio_enemy:
-                                bundle.putInt(TYPE, Participant.ENEMY);
-                                break;
-                        }
-                        listener.onAddParticipantDialogClick(bundle);
+            .setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Bundle bundle = new Bundle();
+                    bundle.putInt(WHICH, POSITIVE_BUTTON);
+                    Dialog apd = getDialog();
+                    EditText et = (EditText)apd.findViewById(R.id.editText_initiative);
+                    if(et.getText().length() == 0) {
+                        bundle.putString(ERROR, "Must set initiative.");
+                    } else {
+                        bundle.putInt(INITIATIVE, Integer.parseInt(et.getText().toString()));
                     }
-                })
-                .setNeutralButton("Next", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Bundle bundle = new Bundle();
-                        bundle.putInt(WHICH, NEUTRAL_BUTTON);
-                        Dialog apd = getDialog();
-                        EditText et = (EditText)apd.findViewById(R.id.editText_initiative);
-                        if(et.getText().length() == 0) {
-                            bundle.putString(ERROR, "Must set initiative.");
-                        } else {
-                            bundle.putInt(INITIATIVE, Integer.parseInt(et.getText().toString()));
-                        }
-                        et = (EditText)apd.findViewById(R.id.editText_name);
-                        if(et.getText().length() == 0) {
-                            bundle.putString(ERROR, "Must set name.");
-                        } else {
-                            bundle.putString(NAME, et.getText().toString());
-                        }
-                        RadioGroup rg = (RadioGroup)apd.findViewById(R.id.radioGroup_type);
-                        switch(rg.getCheckedRadioButtonId()) {
-                            case R.id.radio_player:
-                                bundle.putInt(TYPE, Participant.PLAYER);
-                                break;
-                            case R.id.radio_npc:
-                                bundle.putInt(TYPE, Participant.NPC);
-                                break;
-                            case R.id.radio_enemy:
-                                bundle.putInt(TYPE, Participant.ENEMY);
-                                break;
-                        }
-                        listener.onAddParticipantDialogClick(bundle);
+                    et = (EditText)apd.findViewById(R.id.editText_reaction);
+                    if(et.getText().length() == 0) {
+                        bundle.putString(ERROR, "Must set reaction.");
+                    } else {
+                        bundle.putInt(REACTION, Integer.parseInt(et.getText().toString()));
                     }
-                })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Bundle bundle = new Bundle();
-                        bundle.putInt(WHICH, NEGATIVE_BUTTON);
-                        listener.onAddParticipantDialogClick(bundle);
+                    et = (EditText)apd.findViewById(R.id.editText_name);
+                    if(et.getText().length() == 0) {
+                        bundle.putString(ERROR, "Must set name.");
+                    } else {
+                        bundle.putString(NAME, et.getText().toString());
                     }
-                });
+                    RadioGroup rg = (RadioGroup)apd.findViewById(R.id.radioGroup_type);
+                    switch(rg.getCheckedRadioButtonId()) {
+                        case R.id.radio_player:
+                            bundle.putInt(TYPE, Participant.PLAYER);
+                            break;
+                        case R.id.radio_npc:
+                            bundle.putInt(TYPE, Participant.NPC);
+                            break;
+                        case R.id.radio_enemy:
+                            bundle.putInt(TYPE, Participant.ENEMY);
+                            break;
+                    }
+                    listener.onAddParticipantDialogClick(bundle);
+                }
+            })
+            .setNeutralButton("Next", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Bundle bundle = new Bundle();
+                    bundle.putInt(WHICH, NEUTRAL_BUTTON);
+                    Dialog apd = getDialog();
+                    EditText et = (EditText)apd.findViewById(R.id.editText_initiative);
+                    if(et.getText().length() == 0) {
+                        bundle.putString(ERROR, "Must set initiative.");
+                    } else {
+                        bundle.putInt(INITIATIVE, Integer.parseInt(et.getText().toString()));
+                    }
+                    et = (EditText)apd.findViewById(R.id.editText_reaction);
+                    if(et.getText().length() == 0) {
+                        bundle.putString(ERROR, "Must set reaction.");
+                    } else {
+                        bundle.putInt(REACTION, Integer.parseInt(et.getText().toString()));
+                    }
+                    et = (EditText)apd.findViewById(R.id.editText_name);
+                    if(et.getText().length() == 0) {
+                        bundle.putString(ERROR, "Must set name.");
+                    } else {
+                        bundle.putString(NAME, et.getText().toString());
+                    }
+                    RadioGroup rg = (RadioGroup)apd.findViewById(R.id.radioGroup_type);
+                    switch(rg.getCheckedRadioButtonId()) {
+                        case R.id.radio_player:
+                            bundle.putInt(TYPE, Participant.PLAYER);
+                            break;
+                        case R.id.radio_npc:
+                            bundle.putInt(TYPE, Participant.NPC);
+                            break;
+                        case R.id.radio_enemy:
+                            bundle.putInt(TYPE, Participant.ENEMY);
+                            break;
+                    }
+                    listener.onAddParticipantDialogClick(bundle);
+                }
+            })
+            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Bundle bundle = new Bundle();
+                    bundle.putInt(WHICH, NEGATIVE_BUTTON);
+                    listener.onAddParticipantDialogClick(bundle);
+                }
+            });
         return builder.create();
     }
 
