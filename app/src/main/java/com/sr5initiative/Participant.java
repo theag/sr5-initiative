@@ -23,6 +23,7 @@ public class Participant implements Comparable<Participant> {
     private int passInitiative;
     public int type;
     private int lastAction;
+    private int woundPenalty;
 
     public Participant(String name, int reaction, int initiative, int type) {
         this.name = name;
@@ -31,6 +32,7 @@ public class Participant implements Comparable<Participant> {
         passInitiative = initiative;
         this.type = type;
         lastAction = 0;
+        woundPenalty = 0;
     }
 
     public int nextPass() {
@@ -39,8 +41,8 @@ public class Participant implements Comparable<Participant> {
     }
 
     public void setInitiative(int initiative) {
-        this.initiative = initiative;
-        passInitiative = initiative;
+        this.initiative = initiative - woundPenalty;
+        passInitiative = this.initiative;
         lastAction = 0;
     }
 
@@ -76,5 +78,15 @@ public class Participant implements Comparable<Participant> {
     public void undoAction() {
         passInitiative += lastAction;
         lastAction = 0;
+    }
+
+    public void setWoundPenalty(int woundPenalty) {
+        initiative += woundPenalty - this.woundPenalty;
+        passInitiative += woundPenalty - this.woundPenalty;
+        this.woundPenalty = woundPenalty;
+    }
+
+    public int getWoundPenalty() {
+        return woundPenalty;
     }
 }

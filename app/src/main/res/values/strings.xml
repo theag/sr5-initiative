@@ -23,4 +23,5 @@
     <string name="set_initiative_dialog_title">How to set initiatives</string>
     <string name="reaction">Reaction</string>
     <string name="new_combat">New combat</string>
+    <string name="minus_sign">-</string>
 </resources>

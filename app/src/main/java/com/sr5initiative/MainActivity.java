@@ -14,7 +14,7 @@ import android.widget.ListView;
 
 import java.io.File;
 
-public class MainActivity extends AppCompatActivity implements AddParticipantDialog.OnClickListener {
+public class MainActivity extends AppCompatActivity implements AddParticipantDialog.OnClickListener, WoundModifierDialog.OnClickListener {
 
     private static final int INITIATIVE_REQUEST = 1;
     public static final String MAKING_NEW_COMBAT = "making new combat";
@@ -166,8 +166,14 @@ public class MainActivity extends AppCompatActivity implements AddParticipantDia
     private void initiativeActionChoosen(int which) {
         Participant participant = ParticipantArray.getInstance().get(indexClicked);
         int[] results = restrictInitiativeResults(participant.getPassInitiative());
-        if(results[which] < 0) {
+        if(results[which] == -1) {
             participant.undoAction();
+        } else if(results[which] == -2) {
+            WoundModifierDialog frag = new WoundModifierDialog();
+            Bundle args = new Bundle();
+            args.putInt(WoundModifierDialog.INDEX, indexClicked);
+            frag.setArguments(args);
+            frag.show(getSupportFragmentManager(), "dialog");
         } else {
             participant.doAction(results[which]);
         }
@@ -270,5 +276,13 @@ public class MainActivity extends AppCompatActivity implements AddParticipantDia
         pa.removeEnemies();
         AddParticipantDialog frag = new AddParticipantDialog();
         frag.show(getSupportFragmentManager(), "dialog");
+    }
+
+    @Override
+    public void onWoundPenaltyDialogClick(int value) {
+        ParticipantArray.getInstance().get(indexClicked).setWoundPenalty(value);
+        ListView lv = (ListView)findViewById(R.id.listView);
+        ParticipantAdapter pa = (ParticipantAdapter)lv.getAdapter();
+        pa.notifyDataSetChanged();
     }
 }

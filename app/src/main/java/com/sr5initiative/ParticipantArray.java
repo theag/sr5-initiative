@@ -158,11 +158,13 @@ public class ParticipantArray implements Iterable<Participant> {
         for(int i = 0; i < participants.size(); i++) {
             if(participants.get(i).type == Participant.ENEMY) {
                 participants.remove(i);
+                i--;
             }
         }
         for(int i = 0; i < nextRound.size(); i++) {
             if(nextRound.get(i).type == Participant.ENEMY) {
                 nextRound.remove(i);
+                i--;
             }
         }
         current = -1;
@@ -172,11 +174,13 @@ public class ParticipantArray implements Iterable<Participant> {
         for(int i = 0; i < participants.size(); i++) {
             if(participants.get(i).type != Participant.PLAYER) {
                 participants.remove(i);
+                i--;
             }
         }
         for(int i = 0; i < nextRound.size(); i++) {
             if(nextRound.get(i).type != Participant.PLAYER) {
                 nextRound.remove(i);
+                i--;
             }
         }
         current = -1;

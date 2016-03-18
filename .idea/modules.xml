@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/SR5Initiative.iml" filepath="$PROJECT_DIR$/SR5Initiative.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SR5 Initiative.iml" filepath="$PROJECT_DIR$/SR5 Initiative.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
